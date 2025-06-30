@@ -1,84 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Our Memories</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memories for Maayu 🌷</title>
   <style>
     body {
-      background-color: #ffd9e8;
+      background: pink;
       font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       margin: 0;
-      padding: 20px;
       text-align: center;
     }
-
-    h1 {
-      color: #800040;
-      margin-bottom: 30px;
-    }
-
-    .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .photo {
-      width: 250px;
-      height: 350px;
-      overflow: hidden;
+    img {
+      max-width: 90%;
+      max-height: 60vh;
       border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      transition: transform 0.5s ease, opacity 1s ease;
-      opacity: 0;
-      animation: fadeIn 2s forwards;
+      box-shadow: 0 0 20px #fff;
+      margin-bottom: 20px;
     }
-
-    .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
+    .poem {
+      font-size: 18px;
+      color: #800040;
+      margin: 20px;
+      white-space: pre-wrap;
+      display: none;
+      animation: fadeIn 2s ease-in forwards;
     }
-
-    .photo:hover img {
-      transform: scale(1.1);
-    }
-
     @keyframes fadeIn {
       from {opacity: 0;}
       to {opacity: 1;}
     }
-
-    .next-page {
-      margin-top: 40px;
-      display: inline-block;
-      background-color: #ff80ab;
+    button {
+      background-color: #ff69b4;
       color: white;
-      text-decoration: none;
-      padding: 12px 25px;
-      border-radius: 25px;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .next-page:hover {
-      background-color: #e64a7c;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Our Memories Together 🌷</h1>
-  <div class="gallery">
-    <div class="photo"><img src="Maayu1.jpg" alt="Maayu1"></div>
-    <div class="photo"><img src="Maayu2.jpg" alt="Maayu2"></div>
-    <div class="photo"><img src="Maayu3.jpg" alt="Maayu3"></div>
-    <div class="photo"><img src="Maayu4.jpg" alt="Maayu4"></div>
-    <div class="photo"><img src="Maayu5.jpg" alt="Maayu5"></div>
-    <div class="photo"><img src="Maayu6.jpg" alt="Maayu6"></div>
-  </div>
+  <h2>Our Moments Together 🌷</h2>
+  <img id="photo" src="" alt="memory" />
+  <div id="poem" class="poem"></div>
+  <button id="reveal">Reveal Poetry 🌷</button>
+  <button id="next" style="display:none;">Next ➡️</button>
 
-  <a class="next-page" href="nextpage.html">Next Page ➡️</a>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const photos = [
+      "Maayu1.jpg",
+      "Maayu2.jpg",
+      "Maayu3.jpg",
+      "Maayu4.jpg",
+      "Maayu5.jpg",
+      "Maayu6.jpg"
+    ];
+
+    const poems = [
+`Your smile is a sunrise 🌷
+Waking me from darkest night 🌷
+Your laughter my healing 🌷
+Filling my world with light 🌷
+You hold my heart so softly 🌷
+And make everything feel right 🌷`,
+
+`In your eyes I see tomorrow 🌷
+A hope that never dies 🌷
+You lift me through my sorrow 🌷
+With dreams that touch the skies 🌷
+I’ll love you more each moment 🌷
+Until the end of time flies 🌷`,
+
+`Your innocence is precious 🌷
+A gift I vow to keep 🌷
+With every gentle whisper 🌷
+You calm the storms so deep 🌷
+In you I find my reason 🌷
+In you my love runs deep 🌷`,
+
+`Wrapped in your reflection 🌷
+My Seoul feels so at home 🌷
+No path too long to travel 🌷
+If you are not alone 🌷
+Every beat is yours now 🌷
+My heart is yours to own 🌷`,
+
+`You shine beyond the seasons 🌷
+As stars that guide my way 🌷
+With kindness in your spirit 🌷
+You color every day 🌷
+I promise you forever 🌷
+In love we’ll always stay 🌷`,
+
+`You make this world a garden 🌷
+With tulips in your smile 🌷
+Our story blooms unbroken 🌷
+Across each testing mile 🌷
+So hold me through the changes 🌷
+And dance with me awhile 🌷`
+    ];
+
+    let index = 0;
+
+    const photo = document.getElementById("photo");
+    const poem = document.getElementById("poem");
+    const reveal = document.getElementById("reveal");
+    const next = document.getElementById("next");
+
+    function loadSlide() {
+      photo.src = photos[index];
+      poem.style.display = "none";
+      poem.textContent = poems[index];
+      reveal.style.display = "inline-block";
+      next.style.display = "none";
+    }
+
+    reveal.addEventListener("click", () => {
+      poem.style.display = "block";
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      reveal.style.display = "none";
+      next.style.display = "inline-block";
+    });
+
+    next.addEventListener("click", () => {
+      index++;
+      if(index < photos.length){
+        loadSlide();
+      } else {
+        document.body.innerHTML = `<h1>I love you Maayu 🌷</h1><p>Forever and ever ❤️</p>`;
+        confetti({
+          particleCount: 200,
+          spread: 120
+        });
+      }
+    });
+
+    // start first photo
+    loadSlide();
+  </script>
 </body>
 </html>
