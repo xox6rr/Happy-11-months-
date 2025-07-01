@@ -15,6 +15,7 @@
       height: 100vh;
       margin: 0;
       text-align: center;
+      overflow: hidden;
     }
     img {
       max-width: 90%;
@@ -45,6 +46,15 @@
       font-size: 16px;
       cursor: pointer;
     }
+    .tulip {
+      position: fixed;
+      top: -50px;
+      font-size: 30px;
+      opacity: 0.9;
+      pointer-events: none;
+      transition: top 4s linear, transform 4s linear;
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
@@ -54,7 +64,6 @@
   <button id="reveal">Reveal Poetry 🌷</button>
   <button id="next" style="display:none;">Next ➡️</button>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     const photos = [
       "Maayu1.jpg",
@@ -124,13 +133,26 @@ And dance with me awhile 🌷`
       next.style.display = "none";
     }
 
+    function createTulips() {
+      for(let i=0; i<20; i++){
+        const tulip = document.createElement("div");
+        tulip.textContent = "🌷";
+        tulip.className = "tulip";
+        tulip.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(tulip);
+        setTimeout(() => {
+          tulip.style.top = "100vh";
+          tulip.style.transform = `rotate(${Math.random()*360}deg)`;
+        }, 100);
+        setTimeout(() => {
+          tulip.remove();
+        }, 5000);
+      }
+    }
+
     reveal.addEventListener("click", () => {
       poem.style.display = "block";
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      createTulips();
       reveal.style.display = "none";
       next.style.display = "inline-block";
     });
@@ -140,24 +162,23 @@ And dance with me awhile 🌷`
       if(index < photos.length){
         loadSlide();
       } else {
-        document.body.innerHTML = `<h1>I love you Maayu 🌷</h1><p>Forever and ever ❤️</p>`;
-        confetti({
-          particleCount: 200,
-          spread: 120
-        });
+        document.body.innerHTML = `
+          <h1 style="color:#800040">I love you Maayu 🌷</h1>
+          <p style="font-size:1.2rem">Forever and ever ❤️</p>
+          <button onclick="window.location.href='countdown.html'" style="
+            padding: 10px 20px;
+            background-color: pink;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 30px;
+          ">Next ➡️</button>
+        `;
+        createTulips();
       }
     });
-<button onclick="window.location.href='countdown.html'" style="
-  padding: 10px 20px;
-  background-color: pink;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-top: 30px;
-">
-  Next
-</button>
+
     // start first photo
     loadSlide();
   </script>
